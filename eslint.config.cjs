@@ -5,6 +5,7 @@ const { defineConfig } = require('eslint/config')
 module.exports = defineConfig([
   {
     files: ['**/*.{js,mjs,cjs}'],
+    ignores: ['dist/**', 'node_modules/**'], // <-- добавили игнорируемые папки
     plugins: { js: js },
     extends: ['js/recommended'],
     languageOptions: { globals: globals.browser },
