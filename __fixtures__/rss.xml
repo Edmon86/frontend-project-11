@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Пример фида</title>
+    <description>Это тестовый RSS</description>
+    <link>https://example.com/</link>
+    <item>
+      <title>Пост 1</title>
+      <link>https://example.com/post1</link>
+      <description>Описание поста 1</description>
+    </item>
+    <item>
+      <title>Пост 2</title>
+      <link>https://example.com/post2</link>
+      <description>Описание поста 2</description>
+    </item>
+  </channel>
+</rss>
