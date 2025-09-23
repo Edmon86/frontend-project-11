@@ -69,15 +69,15 @@ const renderFeeds = (feeds) => {
     <h2>Фиды</h2>
     <ul class="list-group mb-4">
       ${feeds
-        .map(
-          (feed) => `
+    .map(
+      (feed) => `
         <li class="list-group-item">
           <h3>${feed.title}</h3>
           <p>${feed.description}</p>
         </li>
       `,
-        )
-        .join('')}
+    )
+    .join('')}
     </ul>
   `
 }
@@ -88,8 +88,8 @@ const renderPosts = (posts) => {
     <h2>Посты</h2>
     <ul class="list-group mb-4">
       ${posts
-        .map(
-          (post) => `
+    .map(
+      (post) => `
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <a 
             href="${post.link}" 
@@ -109,8 +109,8 @@ const renderPosts = (posts) => {
           </button>
         </li>
       `,
-        )
-        .join('')}
+    )
+    .join('')}
     </ul>
   `
 

@@ -1,34 +1,25 @@
-// src/fetchRss.js
-
-/**
- * Получение RSS по URL
- * @param {string} url - адрес RSS
- * @param {boolean} local - использовать локальный RSS (для тестов Hexlet)
- * @returns {Promise<string>} - текст XML фида
- */
-export const fetchRss = (url, local = false) => {
-  if (local) {
-    // Для тестов Hexlet: локальный RSS лежит в /__fixtures__/rss.xml
-    return fetch('/__fixtures__/rss.xml')
-      .then((res) => {
-        if (!res.ok) throw new Error('network')
-        return res.text()
-      })
+export async function fetchRss(url) {
+  // Если мы в тестовой среде (CI), читаем локальный файл
+  if (process.env.NODE_ENV === 'test') {
+    const response = await fetch('/__fixtures__/rss.xml')
+    if (!response.ok) throw new Error('network')
+    return response.text()
   }
 
-  // Реальный интернет
-  return fetch(`https://api.allorigins.win/get?disableCache=true&url=${encodeURIComponent(url)}`)
-    .then((response) => {
-      if (!response.ok) throw new Error('network')
-      return response.json()
-    })
-    .then(({ contents }) => {
-      let xmlText = contents
-      // Если RSS приходит в формате base64
-      if (xmlText.startsWith('data:application/rss+xml')) {
-        const base64 = xmlText.split(',')[1]
-        xmlText = atob(base64)
-      }
-      return xmlText
-    })
+  // Обычный код для продакшена
+  const response = await fetch(
+    `https://api.allorigins.win/get?disableCache=true&url=${encodeURIComponent(url)}`,
+  )
+
+  if (!response.ok) throw new Error('network')
+
+  const data = await response.json()
+  let xmlText = data.contents
+
+  if (xmlText.startsWith('data:application/rss+xml')) {
+    const base64 = xmlText.split(',')[1]
+    xmlText = atob(base64)
+  }
+
+  return xmlText
 }
