@@ -179,7 +179,6 @@ form.addEventListener('submit', (e) => {
 
           feedback.classList.add('text-success')
           feedback.textContent = i18n.t('success')
-          console.log('RSS успешно загружен')
 
           input.value = ''
           input.focus()
