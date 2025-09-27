@@ -1,10 +1,10 @@
-// Парсер RSS
-
-const parseRss = (rssText, url) => {
+export default function parseRss(rssText, url) {
   const parser = new DOMParser()
   const xml = parser.parseFromString(rssText, 'text/xml')
 
-  if (xml.querySelector('parsererror')) throw new Error('parseError')
+  if (xml.querySelector('parsererror') || !xml.querySelector('channel')) {
+    throw new Error('parseError')
+  }
 
   const feedId = crypto.randomUUID()
   const feed = {
@@ -24,4 +24,3 @@ const parseRss = (rssText, url) => {
 
   return { feed, posts }
 }
-export default parseRss
