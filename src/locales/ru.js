@@ -7,7 +7,7 @@ export default {
       add: 'Добавить',
     },
     errors: {
-      invalidUrl: 'Ссылка должна быть валидной',
+      invalidUrl: 'Ссылка должна быть валидным URL',
       alreadyExists: 'RSS уже существует',
       required: 'Поле не должно быть пустым',
       network: 'Ошибка сети',
