@@ -34,7 +34,7 @@ const state = {
 // Инициализация view
 const watchedState = initView(elements, state)
 
-// Функция fetch через Hexlet proxy
+// Функция fetch через Hexlet proxy с обработкой сети
 const fetchRss = (url) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
   .then((res) => {
     if (!res.ok) throw new Error('network')
@@ -48,6 +48,13 @@ const fetchRss = (url) => fetch(`https://allorigins.hexlet.app/get?disableCache=
     }
     return xmlText
   })
+  .catch((err) => {
+    // Если вдруг fetch упал из-за сети - превращаем ошибку в network
+    if (err instanceof TypeError) {
+      throw new Error('network')
+    }
+    throw err
+  })
 
 // Добавление RSS
 document.getElementById('rss-form').addEventListener('submit', (e) => {
@@ -57,8 +64,7 @@ document.getElementById('rss-form').addEventListener('submit', (e) => {
 
   schema.validate(url)
     .then(() => {
-      // Проверка на повторное добавление
-      if (state.feeds.some(f => f.url === url)) {
+      if (state.feeds.some((f) => f.url === url)) {
         watchedState.form.status = 'exists'
         return null
       }
@@ -70,8 +76,12 @@ document.getElementById('rss-form').addEventListener('submit', (e) => {
           watchedState.posts = [...state.posts, ...posts]
           watchedState.form.status = 'valid'
         })
-        .catch(() => {
-          watchedState.form.status = 'parseError'
+        .catch((err) => {
+          if (err.message === 'network') {
+            watchedState.form.status = 'network'
+          } else {
+            watchedState.form.status = 'parseError'
+          }
         })
     })
     .catch((err) => {
@@ -102,7 +112,11 @@ const updateFeeds = () => {
         }
       })
       .catch((err) => {
-        console.warn(`Ошибка обновления фида ${feed.url}:`, err.message)
+        if (err.message === 'network') {
+          console.warn(`Ошибка сети при обновлении фида ${feed.url}`)
+        } else {
+          console.warn(`Ошибка обновления фида ${feed.url}:`, err.message)
+        }
       })
   })
 
