@@ -34,6 +34,21 @@ const state = {
 // Инициализация view
 const watchedState = initView(elements, state)
 
+// Функция fetch через Hexlet proxy
+const fetchRss = (url) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
+  .then((res) => {
+    if (!res.ok) throw new Error('network')
+    return res.json()
+  })
+  .then(({ contents }) => {
+    let xmlText = contents
+    if (xmlText.startsWith('data:application/rss+xml')) {
+      const base64 = xmlText.split(',')[1]
+      xmlText = atob(base64)
+    }
+    return xmlText
+  })
+
 // Добавление RSS
 document.getElementById('rss-form').addEventListener('submit', (e) => {
   e.preventDefault()
@@ -42,20 +57,14 @@ document.getElementById('rss-form').addEventListener('submit', (e) => {
 
   schema.validate(url)
     .then(() => {
+      // Проверка на повторное добавление
+      if (state.feeds.some(f => f.url === url)) {
+        watchedState.form.status = 'exists'
+        return null
+      }
 
-      // Дополнительно проверяем на повторное добавление
-      return fetch(`https://api.allorigins.win/get?disableCache=true&url=${encodeURIComponent(url)}`)
-        .then(res => {
-          if (!res.ok) throw new Error('network')
-          return res.json()
-        })
-        .then(({ contents }) => {
-          let xmlText = contents
-          if (xmlText.startsWith('data:application/rss+xml')) {
-            const base64 = xmlText.split(',')[1]
-            xmlText = atob(base64)
-          }
-
+      return fetchRss(url)
+        .then((xmlText) => {
           const { feed, posts } = parseRss(xmlText, url)
           watchedState.feeds = [...state.feeds, feed]
           watchedState.posts = [...state.posts, ...posts]
@@ -66,8 +75,6 @@ document.getElementById('rss-form').addEventListener('submit', (e) => {
         })
     })
     .catch((err) => {
-
-      // Обрабатываем ошибки Yup
       if (err.name === 'ValidationError') {
         if (err.message === i18n.t('errors.required')) {
           watchedState.form.status = 'required'
@@ -84,42 +91,22 @@ document.getElementById('rss-form').addEventListener('submit', (e) => {
 
 // Автообновление постов
 const updateFeeds = () => {
-  console.log('Проверка RSS-фидов…', new Date().toLocaleTimeString())
-
-  const feedPromises = state.feeds.map((feed) =>
-    fetch(`https://api.allorigins.win/get?disableCache=true&url=${encodeURIComponent(feed.url)}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('network')
-        return res.json()
-      })
-      .then(({ contents }) => {
-        let xmlText = contents
-        // Декодируем base64, если сервер вернул данные в этом формате
-        if (xmlText.startsWith('data:application/rss+xml')) {
-          const base64 = xmlText.split(',')[1]
-          xmlText = atob(base64)
-        }
-
-        // Парсим RSS
+  state.feeds.forEach((feed) => {
+    fetchRss(feed.url)
+      .then((xmlText) => {
         const { posts } = parseRss(xmlText, feed.url)
-
-        // Отбираем новые посты
-        const newPosts = posts.filter(
-          (p) => !state.posts.some((existing) => existing.link === p.link),
-        )
-
+        const newPosts = posts.filter((p) => !state.posts.some((existing) => existing.link === p.link))
         if (newPosts.length > 0) {
-          // Используем watchedState для реактивного обновления
           watchedState.posts = [...state.posts, ...newPosts]
           console.log(`Добавлено ${newPosts.length} новых постов из ${feed.title}`)
         }
       })
       .catch((err) => {
         console.warn(`Ошибка обновления фида ${feed.url}:`, err.message)
-      }),
-  )
+      })
+  })
 
-  Promise.all(feedPromises).finally(() => setTimeout(updateFeeds, 5000))
+  setTimeout(updateFeeds, 5000)
 }
 
 updateFeeds()
