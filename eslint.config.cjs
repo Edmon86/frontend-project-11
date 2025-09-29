@@ -5,7 +5,7 @@ const { defineConfig } = require('eslint/config')
 module.exports = defineConfig([
   {
     files: ['**/*.{js,mjs,cjs}'],
-    ignores: ['dist/**', 'node_modules/**'], // игнорируем сборку и зависимости
+    ignores: ['dist/**', 'node_modules/**'],
     plugins: { js: js },
     extends: ['js/recommended'],
     languageOptions: { globals: globals.browser },
@@ -25,8 +25,9 @@ module.exports = defineConfig([
       'space-in-parens': ['error', 'never'],
       'no-trailing-spaces': ['error'],
       'semi-spacing': ['error', { before: false, after: true }],
-      'arrow-parens': ['error', 'always'],
-      'brace-style': ['error', 'stroustrup', { allowSingleLine: false }],
+      'arrow-parens': ['error', 'as-needed'], // скобки только если нужно
+      'brace-style': ['error', 'stroustrup', { allowSingleLine: false }], // else на той же строке
+      'quote-props': ['error', 'as-needed'], // исправляет ошибки кавычек у ключей
     },
   },
 ])
