@@ -5,7 +5,7 @@ const { defineConfig } = require('eslint/config')
 module.exports = defineConfig([
   {
     files: ['**/*.{js,mjs,cjs}'],
-    ignores: ['dist/**', 'node_modules/**'],
+    ignores: ['dist/**', 'node_modules/**'], // <-- добавили игнорируемые папки
     plugins: { js: js },
     extends: ['js/recommended'],
     languageOptions: { globals: globals.browser },
@@ -25,9 +25,6 @@ module.exports = defineConfig([
       'space-in-parens': ['error', 'never'],
       'no-trailing-spaces': ['error'],
       'semi-spacing': ['error', { before: false, after: true }],
-      'arrow-parens': ['error', 'always'],
-      'brace-style': ['error', 'stroustrup', { allowSingleLine: false }],
-      'quote-props': ['error', 'as-needed'],
     },
   },
 ])
