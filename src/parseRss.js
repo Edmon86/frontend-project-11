@@ -14,7 +14,7 @@ export default function parseRss(rssText, url) {
     url,
   }
 
-  const posts = Array.from(xml.querySelectorAll('item')).map((item) => ({
+  const posts = Array.from(xml.querySelectorAll('item')).map(item => ({
     id: crypto.randomUUID(),
     feedId,
     title: item.querySelector('title')?.textContent || 'Без названия',
