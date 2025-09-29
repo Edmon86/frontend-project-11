@@ -13,7 +13,7 @@ module.exports = defineConfig([
       // Стили
       'semi': ['error', 'never'],
       'quotes': ['error', 'single'],
-      'indent': ['error', 2, { SwitchCase: 1, VariableDeclarator: first }],
+      'indent': ['error', 2, { SwitchCase: 1, VariableDeclarator: 'first' }],
       'comma-dangle': ['error', 'always-multiline'],
       'space-before-function-paren': ['error', 'never'],
       'object-curly-spacing': ['error', 'always'],
