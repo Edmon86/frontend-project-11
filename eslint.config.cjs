@@ -25,6 +25,8 @@ module.exports = defineConfig([
       'space-in-parens': ['error', 'never'],
       'no-trailing-spaces': ['error'],
       'semi-spacing': ['error', { before: false, after: true }],
+      'arrow-parens': ['error', 'as-needed'],
+      'brace-style': ['error', '1tbs', { 'allowSingleLine': false }],
     },
   },
 ])

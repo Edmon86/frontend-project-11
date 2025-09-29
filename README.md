@@ -1,7 +1,8 @@
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/Edmon86/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Edmon86/frontend-project-11/actions)
 # RSS Reader
 Проект фронтенд: простой RSS агрегатор на Vanilla JS с Bootstrap и Vite.
+### Hexlet tests and linter status:
+[![Actions Status](https://github.com/Edmon86/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Edmon86/frontend-project-11/actions)
+
 ## Бейджи статуса
 [![Build](https://github.com/Edmon86/frontend-project-11/actions/workflows/build.yml/badge.svg)](https://github.com/Edmon86/frontend-project-11/actions/workflows/build.yml)
 [![ESLint](https://github.com/Edmon86/frontend-project-11/actions/workflows/eslint.yml/badge.svg)](https://github.com/Edmon86/frontend-project-11/actions/workflows/eslint.yml)

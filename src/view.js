@@ -73,8 +73,8 @@ export const initView = (elements, state) => {
         </ul>
       `
 
-      postsContainer.querySelectorAll('.preview-btn').forEach((btn) => {
-        btn.addEventListener('click', (e) => {
+      postsContainer.querySelectorAll('.preview-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
           const postId = e.target.dataset.id
           const post = value.find(p => p.id === postId)
           if (!post) return

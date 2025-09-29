@@ -35,8 +35,8 @@ const state = {
 const watchedState = initView(elements, state)
 
 // Функция fetch через Hexlet proxy с обработкой сети
-const fetchRss = (url) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
-  .then((res) => {
+const fetchRss = url => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
+  .then(res => {
     if (!res.ok) throw new Error('network')
     return res.json()
   })
@@ -48,7 +48,7 @@ const fetchRss = (url) => fetch(`https://allorigins.hexlet.app/get?disableCache=
     }
     return xmlText
   })
-  .catch((err) => {
+  .catch(err => {
     // Если вдруг fetch упал из-за сети - превращаем ошибку в network
     if (err instanceof TypeError) {
       throw new Error('network')
@@ -57,26 +57,26 @@ const fetchRss = (url) => fetch(`https://allorigins.hexlet.app/get?disableCache=
   })
 
 // Добавление RSS
-document.getElementById('rss-form').addEventListener('submit', (e) => {
+document.getElementById('rss-form').addEventListener('submit', e => {
   e.preventDefault()
   const url = elements.rssInput.value.trim()
   const schema = createUrlSchema(state.feeds)
 
   schema.validate(url)
     .then(() => {
-      if (state.feeds.some((f) => f.url === url)) {
+      if (state.feeds.some(f => f.url === url)) {
         watchedState.form.status = 'exists'
         return null
       }
 
       return fetchRss(url)
-        .then((xmlText) => {
+        .then(xmlText => {
           const { feed, posts } = parseRss(xmlText, url)
           watchedState.feeds = [...state.feeds, feed]
           watchedState.posts = [...state.posts, ...posts]
           watchedState.form.status = 'valid'
         })
-        .catch((err) => {
+        .catch(err => {
           if (err.message === 'network') {
             watchedState.form.status = 'network'
           } else {
@@ -84,7 +84,7 @@ document.getElementById('rss-form').addEventListener('submit', (e) => {
           }
         })
     })
-    .catch((err) => {
+    .catch(err => {
       if (err.name === 'ValidationError') {
         if (err.message === i18n.t('errors.required')) {
           watchedState.form.status = 'required'
@@ -101,17 +101,17 @@ document.getElementById('rss-form').addEventListener('submit', (e) => {
 
 // Автообновление постов
 const updateFeeds = () => {
-  state.feeds.forEach((feed) => {
+  state.feeds.forEach(feed => {
     fetchRss(feed.url)
-      .then((xmlText) => {
+      .then(xmlText => {
         const { posts } = parseRss(xmlText, feed.url)
-        const newPosts = posts.filter((p) => !state.posts.some((existing) => existing.link === p.link))
+        const newPosts = posts.filter(p => !state.posts.some(existing => existing.link === p.link))
         if (newPosts.length > 0) {
           watchedState.posts = [...state.posts, ...newPosts]
           console.log(`Добавлено ${newPosts.length} новых постов из ${feed.title}`)
         }
       })
-      .catch((err) => {
+      .catch(err => {
         if (err.message === 'network') {
           console.warn(`Ошибка сети при обновлении фида ${feed.url}`)
         } else {
