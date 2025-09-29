@@ -11,9 +11,9 @@ module.exports = defineConfig([
     languageOptions: { globals: globals.browser },
     rules: {
       // Стили
-      semi: ['error', 'never'],
-      quotes: ['error', 'single'],
-      indent: ['error', 2],
+      'semi': ['error', 'never'],
+      'quotes': ['error', 'single'],
+      'indent': ['error', 2],
       'comma-dangle': ['error', 'always-multiline'],
       'space-before-function-paren': ['error', 'never'],
       'object-curly-spacing': ['error', 'always'],

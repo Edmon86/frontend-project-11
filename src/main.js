@@ -35,7 +35,7 @@ const state = {
 const watchedState = initView(elements, state)
 
 // Функция fetch через Hexlet proxy с обработкой сети
-const fetchRss = (url) => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
+const fetchRss = url => fetch(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`)
   .then((res) => {
     if (!res.ok) throw new Error('network')
     return res.json()
@@ -64,7 +64,7 @@ document.getElementById('rss-form').addEventListener('submit', (e) => {
 
   schema.validate(url)
     .then(() => {
-      if (state.feeds.some((f) => f.url === url)) {
+      if (state.feeds.some(f => f.url === url)) {
         watchedState.form.status = 'exists'
         return null
       }
@@ -109,7 +109,7 @@ const updateFeeds = () => {
     fetchRss(feed.url)
       .then((xmlText) => {
         const { posts } = parseRss(xmlText, feed.url)
-        const newPosts = posts.filter((p) => !state.posts.some((existing) => existing.link === p.link))
+        const newPosts = posts.filter(p => !state.posts.some(existing => existing.link === p.link))
         if (newPosts.length > 0) {
           watchedState.posts = [...state.posts, ...newPosts]
           console.log(`Добавлено ${newPosts.length} новых постов из ${feed.title}`)
