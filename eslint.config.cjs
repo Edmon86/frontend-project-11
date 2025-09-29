@@ -5,15 +5,15 @@ const { defineConfig } = require('eslint/config')
 module.exports = defineConfig([
   {
     files: ['**/*.{js,mjs,cjs}'],
-    ignores: ['dist/**', 'node_modules/**'], // <-- добавили игнорируемые папки
+    ignores: ['dist/**', 'node_modules/**'], // игнорируем сборку и зависимости
     plugins: { js: js },
     extends: ['js/recommended'],
     languageOptions: { globals: globals.browser },
     rules: {
       // Стили
-      'semi': ['error', 'never'],
-      'quotes': ['error', 'single'],
-      'indent': ['error', 2],
+      semi: ['error', 'never'],
+      quotes: ['error', 'single'],
+      indent: ['error', 2],
       'comma-dangle': ['error', 'always-multiline'],
       'space-before-function-paren': ['error', 'never'],
       'object-curly-spacing': ['error', 'always'],
@@ -25,8 +25,8 @@ module.exports = defineConfig([
       'space-in-parens': ['error', 'never'],
       'no-trailing-spaces': ['error'],
       'semi-spacing': ['error', { before: false, after: true }],
-      'arrow-parens': ['error', 'as-needed'],
-      'brace-style': ['error', '1tbs', { 'allowSingleLine': false }],
+      'arrow-parens': ['error', 'always'],
+      'brace-style': ['error', 'stroustrup', { allowSingleLine: false }],
     },
   },
 ])
