@@ -25,9 +25,9 @@ module.exports = defineConfig([
       'space-in-parens': ['error', 'never'],
       'no-trailing-spaces': ['error'],
       'semi-spacing': ['error', { before: false, after: true }],
-      'arrow-parens': ['error', 'as-needed'], // скобки только если нужно
-      'brace-style': ['error', 'stroustrup', { allowSingleLine: false }], // else на той же строке
-      'quote-props': ['error', 'as-needed'], // исправляет ошибки кавычек у ключей
+      'arrow-parens': ['error', 'always'],
+      'brace-style': ['error', 'stroustrup', { allowSingleLine: false }],
+      'quote-props': ['error', 'as-needed'],
     },
   },
 ])

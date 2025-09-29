@@ -50,7 +50,7 @@ export const initView = (elements, state) => {
       feedsContainer.innerHTML = `
         <h2>Фиды</h2>
         <ul class="list-group mb-3">
-          ${value.map(feed => `
+          ${value.map((feed) => `
             <li class="list-group-item">
               <h3 class="h6">${feed.title}</h3>
               <p>${feed.description}</p>
@@ -64,7 +64,7 @@ export const initView = (elements, state) => {
       postsContainer.innerHTML = `
         <h2>Посты</h2>
         <ul class="list-group mb-3">
-          ${value.map(post => `
+          ${value.map((post) => `
             <li class="list-group-item d-flex justify-content-between align-items-start">
               <a href="${post.link}" target="_blank" rel="noopener noreferrer" class="${readPosts.has(post.id) ? 'fw-normal' : 'fw-bold'}" data-id="${post.id}">${post.title}</a>
               <button type="button" class="btn btn-outline-primary btn-sm preview-btn" data-id="${post.id}">Просмотр</button>
@@ -73,10 +73,10 @@ export const initView = (elements, state) => {
         </ul>
       `
 
-      postsContainer.querySelectorAll('.preview-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
+      postsContainer.querySelectorAll('.preview-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
           const postId = e.target.dataset.id
-          const post = value.find(p => p.id === postId)
+          const post = value.find((p) => p.id === postId)
           if (!post) return
 
           readPosts.add(postId)
